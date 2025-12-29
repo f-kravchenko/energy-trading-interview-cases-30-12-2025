@@ -1,0 +1,16 @@
+Problem 2: Forecasting
+Background
+We need to forecast the power consumption at 09:00 on the before for the entire next day (D+1
+00:00 until 24:00) due to the fact that the day-ahead power markets opens trading at 09:00 am on
+the day before power consumption.
+Tasks
+1. Create energy consumption estimates for all 15 minute intervals of the next day
+2. Please implement a pragmatic and usable solution and tell us how good it performs
+3. Which data/features you would need to improve your forecast? Feel free to use any available
+data you can find online or simulated data to prove it’s useful.
+4. How do you handle different behavior across devices and between space heating and drinking
+hot water?
+5. Our forecast runs as a Celery task every day shortly before 9:00 am for day-ahead trading. For
+intraday trading, the forecast needs to run at a moments notice, many times a day. What are the
+architecture challenges in such a case? Please describe a useful architecture + infra on GCP +
+open source frameworks that are relevant

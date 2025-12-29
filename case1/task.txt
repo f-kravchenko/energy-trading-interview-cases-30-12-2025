@@ -1,0 +1,22 @@
+Problem 1: Steering
+
+Background
+We need to steer (control) heat pumps according to spot prices using the OEM available
+commands.
+Current Implementation
+- Optimization Algo: Calculates modes min/low/mid/max based on a spot day-ahead price curve.
+    Max: lowest price → prioritize heating (we canʼt force it); Min: highest price → avoid heating
+- Scheduler: schedules celery tasks on mode change e.g. min → max
+- Celery runs scheduled task with a generic command e.g. "mode change min→max"
+- Specific OEM interprets the generic command and executes it by calling the OEM API e.g. for
+min → max "Change heating temperature offset by 1 degree" and “Activate boost drinking hot
+water modeˮ
+- We log if the command was successfully sent (POST OEM API response)
+
+Tasks
+- What are problems with the current approach?
+- Please implement an improved solution for it
+- How can we improve the economic outcome of the steering?
+- How can we improve the steering to be more robust? What edge cases do you see?
+- What are the challenges with the current infrastructure? Please describe a useful architecture + infra on GCP  open source
+frameworks that are relevant

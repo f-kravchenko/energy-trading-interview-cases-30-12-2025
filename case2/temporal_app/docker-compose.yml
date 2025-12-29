@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # Temporal server (development setup)
+  temporal:
+    container_name: temporal-dev
+    image: temporalio/auto-setup:latest
+    ports:
+      - "7233:7233"  # Temporal gRPC
+      - "8233:8233"  # Temporal Web UI
+    environment:
+      - DB=postgres12
+      - DB_PORT=5432
+      - POSTGRES_USER=temporal
+      - POSTGRES_PWD=temporal
+      - POSTGRES_SEEDS=postgresql
+    depends_on:
+      - postgresql
+
+  # PostgreSQL for Temporal state storage
+  postgresql:
+    container_name: temporal-postgresql
+    image: postgres:12
+    environment:
+      POSTGRES_PASSWORD: temporal
+      POSTGRES_USER: temporal
+      POSTGRES_DB: temporal
+    ports:
+      - "5570:5432"
+    volumes:
+      - temporal-postgres-data:/var/lib/postgresql/data
+
+  # Temporal Web UI
+  temporal-ui:
+    container_name: temporal-ui
+    image: temporalio/ui:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - TEMPORAL_ADDRESS=temporal:7233
+      - TEMPORAL_CORS_ORIGINS=http://localhost:3000
+    depends_on:
+      - temporal
+
+  # Redis for caching (optional, used by workers)
+  redis:
+    container_name: forecast-redis
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+volumes:
+  temporal-postgres-data:
+  redis-data:
